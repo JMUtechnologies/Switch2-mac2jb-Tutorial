@@ -45,7 +45,18 @@ LOAD "TXT:NS2"
 
 The full game does not need the demo save script.
 
-## Demo 4.4.6: eight-line save script
+## Demo 4.4.6: open the editor and save
+
+1. Launch SmileBASIC Demo and enter its programming workspace (**Make a Program**).
+2. Connect a USB keyboard if available.
+3. Press **Ctrl+1** to select the **PRG0** editor, which holds the transferred bootstrap. Keep that program intact.
+4. Press **Ctrl+2** to select the **PRG1** editor, where you will type the eight-line saving script.
+5. After entering the script, press **Esc** to return to **Direct mode** (or use the console's exit-editor control if Esc behaves differently).
+6. Execute `RUN 1` **from Direct mode**, not from the editor.
+
+**Keyboard reference:** Ctrl+1 → PRG0; Ctrl+2 → PRG1; Esc → Direct mode in the contributor's tested workflow. Confirm the active program slot before typing.
+
+### Eight-line save script
 
 Leave the complete bootstrap in **PRG0**. Switch the editor to **PRG1** and enter exactly these eight lines:
 
