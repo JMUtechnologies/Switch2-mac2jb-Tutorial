@@ -135,8 +135,13 @@ for the full game. The full version does not need the eight-line workaround.
 6. DEMO 4.4.6: EIGHT-LINE PRG1 SAVE PROCEDURE
 
 This is the contributor's tested procedure, matching HDR's original gist.
-First ensure the COMPLETE bootstrap is already in PRG0. Switch the editor to
-PRG1 (HDR documents Ctrl+2). Do not overwrite PRG0 with this helper.
+First ensure the COMPLETE bootstrap is already in PRG0. To open the editor,
+launch SmileBASIC Demo and enter its Make a Program workspace. With a USB
+keyboard, Ctrl+1 selects PRG0 (the transferred bootstrap); Ctrl+2 selects
+PRG1 (the helper script). Do not overwrite PRG0 with this helper. Once the
+script is entered, press Esc to return to Direct mode (or use the editor's
+exit control if Esc behaves differently). Confirm the active program slot
+before typing. RUN 1 must be entered in Direct mode, NOT in the editor.
 
 Enter exactly these eight lines in PRG1, without line numbers:
 
