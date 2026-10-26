@@ -1,0 +1,294 @@
+NINTENDO SWITCH 2 — mac2jb COMPLETE COMMUNITY GUIDE
+Full SmileBASIC and Japanese Demo 4.4.6
+Documentation checked: October 26, 2026
+
+CONTENTS
+1. Evidence and compatibility
+2. Requirements, network and DNS
+3. Prepare the Mac and USB driver
+4. Transfer the matching bootstrap
+5. Full version: save and load
+6. Demo 4.4.6: eight-line PRG1 save procedure
+7. Run, verify and finish
+8. Troubleshooting
+9. Sources and credits
+
+1. EVIDENCE AND COMPATIBILITY
+
+USER-TESTED / REPORTED BY THE GUIDE CONTRIBUTOR
+- Nintendo Switch 2 firmware: 23.0.1.
+- SmileBASIC: Japanese Demo 4.4.6.
+- Mac: Apple Silicon M2 MacBook Pro.
+- Eight-line demo save procedure: reported successful.
+- mac2jb steps 3 and 4: reported successful with BOTH Mac and Switch 2
+  connected by wired Ethernet.
+- Exact mac2jb release and macOS version: not recorded in the source tutorial.
+
+These results come from the contributor's saved tutorial. This repository has
+not independently repeated the hardware test. The original file also says full
+exploit/homebrew functionality was not independently verified. Those statements
+are compatible: a user success report is not independent validation.
+
+The phrase "steps 3 and 4" is preserved from that report. It refers to their
+mac2jb workflow; its original screen labels were not recorded. It does not mean
+sections 3 and 4 of this guide and does not establish that every homebrew app works.
+
+UPSTREAM REQUIREMENTS VERSUS THIS REPORT
+Upstream lists SmileBASIC 4.4.9, firmware 23.0.1, Apple Silicon/macOS 14+,
+and over 20 MiB free in the SmileBASIC save. The 4.4.6 demo result is separate;
+do not treat it as upstream certification for every demo version or region.
+Do not update or purchase software just to assume compatibility.
+
+Ethernet was required for the contributor's successful setup during steps 3 and
+4. Both devices being wired is the recommended way to reproduce that report,
+not a proven universal requirement. Wi-Fi has not been validated here.
+
+2. REQUIREMENTS, NETWORK AND DNS
+
+Have the console, installed SmileBASIC edition, compatible Apple Silicon Mac,
+mac2jb GUI, USB-C data cable, and Ethernet cables/adapters as needed. A USB
+keyboard is useful for manual commands. Keep the USB connection when mac2jb
+requests it: Ethernet and USB serve different parts of the workflow.
+
+Connect both devices to the same local network by Ethernet. Avoid guest-network
+isolation. In Ready Check, choose the MAC'S ETHERNET IPv4 address, not the
+Switch's address, a VPN address, or an inactive Wi-Fi interface. Recheck the
+selection after changing adapters or networks.
+
+DNS — VERIFIED AGAINST THE LINKED 90DNS GUIDE ON OCTOBER 26, 2026
+On Switch 2: System Settings > Internet > Internet Settings > select the
+Ethernet connection used for testing > Change Settings > DNS Settings > Manual.
+
+North or South America:
+  Primary IPv4:   207.246.121.77
+  Secondary IPv4: 163.172.141.219
+Other regions:
+  Primary IPv4:   163.172.141.219
+  Secondary IPv4: 207.246.121.77
+
+The linked guide specifies :: in both primary and secondary IPv6 DNS fields
+on Switch 2. This may be unsuitable on IPv6-only networks. Save, reconnect,
+and verify that the configuration filters Nintendo services on your network.
+An ordinary connection test alone does not prove all updates are blocked.
+
+90DNS can block eShop, Nintendo Switch Online and other Nintendo services.
+It is not a guarantee against updates; cached addresses, changed endpoints,
+or another connection can bypass filtering. Settings apply to the selected
+connection. It does not improve exploit safety or establish compatibility.
+
+Current reference:
+https://consolemods.org/wiki/Switch:Blocking_OFW_Updates#90DNS
+
+3. PREPARE THE MAC AND USB DRIVER
+
+Download mac2jb from its official release page, extract the complete package,
+and open the GUI. Follow its bundled driver instructions for that exact version.
+https://github.com/cpypwn/mac2jb/releases
+
+The experimental usbgadget.kext needs a compatible Mac and approval/restarts.
+For the bundled UNSIGNED driver, current upstream documents SIP changes in
+addition to Recovery kernel-extension policy. Reduced Security alone is not
+proof that an unsigned driver can load. A working partial/custom SIP setup
+should follow upstream's specific guidance rather than be changed blindly.
+
+Apple documents Recovery approval and the security implications here:
+https://support.apple.com/guide/security/securely-extending-the-kernel-sec8e454101b/web
+
+Kernel extensions and reduced protections can affect system security/stability.
+Review the exact driver source and current instructions before changing policy.
+Use the app's Install & load driver action, complete Privacy & Security approval
+and required restarts, then refresh its driver status. Do not repeatedly reinstall
+just to check status. A successful install/build is not proof of keyboard input.
+
+On Switch 2 set Controllers & Accessories > USB Keyboard to US English.
+Confirm the cable supports data and that actual input appears in SmileBASIC.
+Mac ports/controller mappings vary; do not copy another model's mapping as fact.
+
+4. TRANSFER THE MATCHING BOOTSTRAP
+
+VERSION NOTE: The upstream release checked for this guide is v0.4.3. Current
+mac2jb uses the kurumuz bootstrap with START(PORT,A,B,C,D). Older saved
+bootstraps using nine START arguments must be replaced when moving to that
+workflow. The contributor's original release was not recorded, so their test
+does not establish a test of v0.4.3. Keep bootstrap, host and sender versions
+matched. Use the bundled file; do not copy a START command from a screenshot.
+
+Open SmileBASIC > Make a Program with a clean PRG0 editor. Select the app's
+bootstrap-typing mode. Set its Demo checkbox to match your edition. Let typing
+finish completely, inspect the result, and save using section 5 or 6 below.
+Do not interrupt a normal long transfer or start a duplicate over partial code.
+
+5. FULL VERSION: SAVE AND LOAD
+
+With the bootstrap in program slot 0, press X to return to Direct mode. Enter:
+
+SAVE "NS2"
+
+Execute it and confirm the save succeeded. To restore the saved program later,
+use this in Direct mode:
+
+LOAD "TXT:NS2"
+
+Accept any loading confirmation and inspect PRG0. Leave the Demo option off
+for the full game. The full version does not need the eight-line workaround.
+
+6. DEMO 4.4.6: EIGHT-LINE PRG1 SAVE PROCEDURE
+
+This is the contributor's tested procedure, matching HDR's original gist.
+First ensure the COMPLETE bootstrap is already in PRG0. Switch the editor to
+PRG1 (HDR documents Ctrl+2). Do not overwrite PRG0 with this helper.
+
+Enter exactly these eight lines in PRG1, without line numbers:
+
+PRGEDIT 0
+SRC$=""
+FOR I=1 TO PRGSIZE(0)
+  L$=PRGGET$()
+  SRC$=SRC$+L$
+NEXT
+SAVEV "TXT:NS2",SRC$
+END
+
+Each command occupies its own line. Indent lines 4 and 5 with spaces or Tab.
+SRC$="" contains two straight double quotation marks. Include a space after
+SAVEV; do not insert spaces inside "TXT:NS2". The optional space after the
+comma in HDR's version does not change the command.
+
+Finish editing, return to Direct mode, and enter:
+
+RUN 1
+
+Execute it. RUN 1 belongs in Direct mode, not inside the eight-line program.
+Check for errors and confirm NS2 was saved. The helper reads PRG0; an empty
+or incomplete PRG0 produces an unusable saved bootstrap even if saving succeeds.
+
+MANUAL DEMO RESTORE / CHECK
+Current upstream documents this Direct-mode load command:
+
+PRGEDIT 0:LOADV "TXT:NS2" OUT C$:PRGSET C$
+
+Inspect PRG0 after loading, especially after restarting the console. Compare it
+with the matching bundled bootstrap before trusting the saved copy. The current
+upstream also documents a shorter two-command save method; this guide retains
+the eight-line procedure because that is what the contributor reported testing.
+Do not assume the two methods were both tested by this contributor.
+
+Upstream notes that automated demo loading still needs a console test. If GUI
+loading fails, check manual restoration and the exact release's instructions.
+Do not substitute the full game's LOAD/confirmation sequence without checking
+demo behavior. The GUI Demo checkbox selects the edition-specific route.
+
+7. RUN, VERIFY AND FINISH
+
+After saving, restart the console normally, open SmileBASIC and enter Direct
+mode. Open mac2jb and select the appropriate run mode. For homebrew, use Held
+RPC, which keeps the verified connection open. Here "held" means a live session;
+it does not mean a permanent jailbreak.
+
+Select the Mac's Ethernet IPv4 address in Ready Check. Enable the Demo option
+only for the demo. Keep both Ethernet connections, the requested USB cable,
+and SmileBASIC focus in place. Follow the GUI's prompts for the matching build.
+
+Wait for 4/4 verification AND confirmation that RPC is open before launching
+homebrew. Finished typing or a successful USB-send message is not exploit
+verification. This guide does not claim all homebrew works on Demo 4.4.6.
+
+Use only the current host session's generated START command. Saving NS2 saves
+program text, not live session parameters. Never reuse pairing values from an
+old run. Do not send REMOVE twice in the same SmileBASIC process.
+
+When finished, use Finish session and wait for cleanup. Restart the console
+before another attempt. If cleanup is uncertain, follow the app's recovery
+instructions and restart before retrying. Review logs before sharing them:
+they may contain session parameters, machine details or console memory captures.
+
+8. TROUBLESHOOTING
+
+Save failed / NS2 missing
+  Check the exact name, straight quotes, PRG0 contents and script syntax. Run
+  the helper from PRG1 using RUN 1 in Direct mode. Do not mistake successful
+  helper entry for a completed save. Verify a restore after a console restart.
+
+RUN 1 does nothing or gives an error
+  Confirm the eight helper lines are in PRG1, not PRG0. Check FOR/NEXT, the
+  empty string, dollar signs and PRGSIZE(0). Preserve the bootstrap in PRG0.
+
+USB driver fails / no keyboard input
+  Read the exact error and driver logs. Check macOS compatibility, required
+  approval/reboot, USB data cable, input focus and controller selection. On
+  reported setups USB power direction matters; reconnect if the Mac is charging
+  the Switch and enumeration fails. Do not infer a missing driver from every
+  helper crash or solve unexplained errors by changing unrelated security settings.
+
+Wrong punctuation or corrupted bootstrap
+  Check the Switch USB Keyboard setting is US English. Clear the partial input
+  and retransmit after correcting layout. Check both devices before retrying.
+
+Network connection / verification fails
+  Reproduce the contributor's Ethernet setup for BOTH devices. Select the Mac's
+  active Ethernet IPv4 address. Check same-network reachability, guest isolation,
+  host firewall prompts, correct Demo checkbox and matching bootstrap/host build.
+  DNS filtering does not replace a reachable local host connection.
+
+Old save stops working after a mac2jb update
+  Check the five-argument versus nine-argument bootstrap migration note. Replace
+  NS2 using the bootstrap bundled with the version actually running.
+
+Black screen, freeze or failed verification
+  Inspect the Mac activity log first. Stop retries; do not immediately repeat
+  the exploit in the same console process. If no operation is still running and
+  the console is unresponsive, restart it. Keep the exact error for diagnosis.
+
+Download won't open
+  Use the official Releases page, extract the complete ZIP and follow that
+  release's macOS opening instructions. This repository contains guides only;
+  it does not include the mac2jb app or driver.
+
+9. SOURCES AND CREDITS
+
+Primary tutorial source: the contributor's saved file,
+Switch2_mac2jb_COMPLETE_GUIDE_FRESH.txt, recovered alongside the referenced
+"Enable Kernel Extensions" conversation. The accessible conversation preview
+did not expose the earlier tutorial bodies, so the saved file supplied the
+tested procedure. Its conflicting closing note is clarified in section 1.
+
+Upstream mac2jb (current instructions):
+https://github.com/cpypwn/mac2jb
+Reviewed README revision:
+https://github.com/cpypwn/mac2jb/blob/79a03577fb61061aa603e9583a0e6eebad9cac2b/README.md
+Release checked:
+https://github.com/cpypwn/mac2jb/releases/tag/v0.4.3
+
+HDR's original eight-line demo saving script and RUN 1 instructions:
+https://gist.github.com/HDR/6ca4e04945c1a8096cd36395e4c199f7
+
+90DNS values, regional ordering and IPv6 note:
+https://consolemods.org/wiki/Switch:Blocking_OFW_Updates#90DNS
+ConsoleMods revision checked: oldid 96510. DNS text here is summarized from
+that guide; its site identifies Creative Commons Attribution licensing.
+
+Apple kernel-extension policy and security explanation:
+https://support.apple.com/guide/security/securely-extending-the-kernel-sec8e454101b/web
+
+Special thanks to cpypwn for mac2jb and direct setup assistance acknowledged
+in the original tutorial; HDR for the demo save workaround; pepsipu and the
+ns2jb contributors for the original exploit and research; kurumuz for the
+compatibility fork; and ShinyQuagsire for libusbd and macos_usb_gadget_poc.
+
+Current ns2jb fork:
+https://gitlab.com/kurumuz/ns2jb
+Original ns2jb:
+https://gitlab.com/pepsipu/ns2jb
+USB research:
+https://github.com/shinyquagsire23/libusbd
+https://github.com/shinyquagsire23/macos_usb_gadget_poc
+
+Credit to the guide contributor for Japanese Demo 4.4.6 testing and the wired
+network observations. This publication does not claim authorship of upstream
+software or the save workaround. Their licenses remain their own; no blanket
+license is asserted over third-party material. No exploit binaries, Nintendo
+software, pairing tokens or local logs are included.
+
+Independent community documentation, not affiliated with Nintendo or SmileBASIC.
+Follow current upstream instructions when releases change, and retain the
+distinction between contributor reports and independently verified requirements.
